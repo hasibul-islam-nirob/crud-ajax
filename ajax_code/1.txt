@@ -1,0 +1,620 @@
+function jsRoleWisePermissionForPopUp(set_status = null, action_name = null, action_link = null, rowId = null) {
+
+    /**
+     * SetStatus 
+     * 1 = Add
+     * 2 = Edit
+     * 3 = View
+     * 4 = Publish(is_active)
+     * 5 = Unpublish(is_active)
+     * 6 = Delete
+     * 7 = Approve
+     * 8 = All Data
+     * 9 = Change Password
+     * 10 = Permission
+     * 11 = Print
+     * 12 = print pdf
+     * 13 = Force Delete
+     * 14 = Permission Folder
+     * 15 = Day End / Month End
+     * 16 = Send
+     */
+
+
+    var actionHTML = '';
+
+    // console.log(action_link)
+
+    if (set_status != null && action_name != null && action_link != null) {
+
+        var set_status_arr = set_status.split(',');
+        var action_name_arr = action_name.split(',');
+        var action_link_arr = action_link.split(',');
+
+
+        var position = 0;
+
+
+        if ($.inArray("3", set_status_arr) != -1) { // View
+            position = $.inArray("3", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="viewAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)" onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon wb-eye mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("16", set_status_arr) != -1) { // Send
+            position = $.inArray("16", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="sendAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="fa-solid mr-2 fa-paper-plane blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("2", set_status_arr) != -1) { // Edit
+            position = $.inArray("2", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="editAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon wb-edit mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("6", set_status_arr) != -1) { // delete
+            position = $.inArray("6", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="deleteAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon wb-trash mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+
+        if ($.inArray("4", set_status_arr) != -1) { // Publish
+            position = $.inArray("4", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="publishAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+
+
+            //actionHTML += '<i class="fas fa-toggle-off mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '<label class="action-switch">' +
+                '<input type="checkbox">' +
+                '<span class="slider action-slider round"></span>' +
+                '</label>';
+
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("5", set_status_arr) != -1) { // Unpublish
+            position = $.inArray("5", set_status_arr);
+
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" data-id = ' + rowId + ' data-link = ' + action_link_arr[position] + ' title="' + action_name_arr[position] + '" class="unpublishAction">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+
+            //actionHTML += '<i class="fas fa-toggle-off mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '<label class="action-switch">' +
+                '<input checked type="checkbox">' +
+                '<span class="slider action-slider round"></span>' +
+                '</label>';
+            actionHTML += '</a>';
+        }
+
+
+        if ($.inArray("7", set_status_arr) != -1) { // Approve
+            position = $.inArray("7", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="' + action_link_arr[position] + '" title="' + action_name_arr[position] + '" class="btnApprove">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon fa fa-check-square mr-2 blue-grey-' + opacity + '" style="font-size: 18px;"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("9", set_status_arr) != -1) { // Change Password
+            position = $.inArray("9", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="' + action_link_arr[position] + '" title="' + action_name_arr[position] + '" class="btnChangePassword">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+
+            actionHTML += '<i class="icon fa fa-exchange mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("10", set_status_arr) != -1) { // Permission
+            position = $.inArray("10", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="' + action_link_arr[position] + '" title="' + action_name_arr[position] + '" class="btnPermission">';
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon fa fa-qrcode mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("11", set_status_arr) != -1) { // print
+            position = $.inArray("11", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" onClick="window.print()" title="' + action_name_arr[position] + '" class="btnPrint">';
+
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon fa fa-print mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("12", set_status_arr) != -1) { // print pdf
+            position = $.inArray("12", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="javascript:void(0)" onClick="window.print()" title="' + action_name_arr[position] + '" class="btnPrintPDF">';
+
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+            actionHTML += '<i class="icon fa fa-file-pdf-o mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("13", set_status_arr) != -1) { // Force Delete
+            position = $.inArray("13", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="' + action_link_arr[position] + '" title="' + action_name_arr[position] + '" class="btnForceDelete">';
+
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon wb-scissor mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+
+        if ($.inArray("14", set_status_arr) != -1) { // Permission Folder
+            position = $.inArray("14", set_status_arr);
+
+            var messageFlag = action_link_arr[position].includes("(message)=");
+            var message = action_link_arr[position].replace("(message)=", "");
+            var opacity = 600;
+            if (messageFlag == false) {
+                actionHTML += '<a href="' + action_link_arr[position] + '" title="' + action_name_arr[position] + '" class="btnPermissionFolder">';
+
+            } else {
+                opacity = 400;
+                actionHTML += '<a href="javascript:void(0)"  onclick="fnPermissionDeniedFor(\'' + message + '\');">';
+            }
+
+            actionHTML += '<i class="icon icon wb-folder mr-2 blue-grey-' + opacity + '"></i>';
+            actionHTML += '</a>';
+        }
+    }
+
+    return actionHTML;
+}
+
+$(document).on("click", ".addAction", function(e) {
+
+    let url = $(this).data('link');
+    console.log(url)
+    loadModal(e, url);
+
+});
+
+$(document).on("click", ".viewAction", function(e) {
+
+    let url = $(this).data('link');
+    loadModal(e, url);
+
+});
+
+$(document).on("click", ".editAction", function(e) {
+    let url = $(this).data('link');
+    loadModal(e, url);
+});
+
+$(document).on("click", ".sendAction", function(e) {
+
+    e.preventDefault();
+    let url = $(this).data('link');
+    swal({
+            title: "Are you sure to send this resign application?",
+            text: "Once Send, You can't delete or update your resign application",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                callApi(url + "/api",
+                    'post', '',
+                    function(response, textStatus, xhr) {
+
+                        if (response["alert-type"] == "success" || response["status"] == "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'success',
+                                title: 'Sent!',
+                                // text: response['message'],
+                                content: wrapper,
+                            });
+                            ajaxDataLoad();
+                        } else {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                // text: response['message'],
+                                content: wrapper,
+                            });
+                        }
+
+                        // swal(
+                        //     'Success!',
+                        //     'Application Send!!',
+                        //     'success'
+                        // )
+                        // ajaxDataLoad();
+                    },
+
+                    function(response) {
+                        if (typeof response.message === 'undefined') {
+                            showApiResponse(response.status, JSON.parse(response.responseText).message);
+                        } else {
+                            showApiResponse(response.status, response.message);
+                        }
+                    });
+            }
+        });
+
+});
+
+$(document).on("click", ".deleteAction", function(e) {
+    e.preventDefault();
+    let url = $(this).data('link');
+    swal({
+            title: "Are you sure to delete record?",
+            text: "Once Delete, this will be permanently delete!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                callApi(url,
+                    'post', '',
+                    function(response, textStatus, xhr) {
+                        if (response["alert-type"] == "success" || response["status"] == "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                // text: response['message'],
+                                content: wrapper,
+                            });
+                            ajaxDataLoad();
+                        } else {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                // text: response['message'],
+                                content: wrapper,
+                            });
+                        }
+                    },
+                    function(response) {
+                        if (typeof response.message === 'undefined') {
+                            showApiResponse(response.status, JSON.parse(response.responseText).message);
+                        } else {
+                            showApiResponse(response.status, response.message);
+                        }
+                    });
+            }
+        });
+});
+
+$(document).on("click", ".publishAction", function(e) {
+    e.preventDefault();
+    let url = $(this).data('link');
+    swal({
+            title: "Are you sure to active?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willPublish) => {
+            if (willPublish) {
+                callApi(url,
+                    'post', '',
+                    function(response, textStatus, xhr) {
+                        if (response["alert-type"] == "success" || response["status"] == "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'success',
+                                title: 'Activated!',
+                                content: wrapper,
+                            });
+                            ajaxDataLoad();
+                        } else {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                content: wrapper,
+                            });
+                        }
+                    },
+                    function(response) {
+                        if (typeof response.message === 'undefined') {
+                            showApiResponse(response.status, JSON.parse(response.responseText).message);
+                        } else {
+                            showApiResponse(response.status, response.message);
+                        }
+                    });
+            }
+        });
+});
+
+$(document).on("click", ".unpublishAction", function(e) {
+    e.preventDefault();
+    let url = $(this).data('link');
+    swal({
+            title: "Are you sure to disable?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willUnpublish) => {
+            if (willUnpublish) {
+                callApi(url,
+                    'post', '',
+                    function(response, textStatus, xhr) {
+                        if (response["alert-type"] == "success" || response["status"] == "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'success',
+                                title: 'Disabled!',
+                                content: wrapper,
+                            });
+                            ajaxDataLoad();
+                        } else {
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = response.message;
+                            swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                content: wrapper,
+                            });
+                        }
+                    },
+                    function(response) {
+                        if (typeof response.message === 'undefined') {
+                            showApiResponse(response.status, JSON.parse(response.responseText).message);
+                        } else {
+                            showApiResponse(response.status, response.message);
+                        }
+                    });
+            }
+        });
+});
+
+$(document).on("click", ".pendingApplicationView", function(e) {
+
+    let url = $(this).data('link');
+    loadModal(e, url);
+
+});
+
+function loadModal(e, url, parameter = {}) {
+    e.preventDefault();
+
+    let modalBodyId = ("modalBodyId" in parameter) ? parameter.modalBodyId : "commonModalBody";
+
+    $('#' + modalBodyId).html('');
+    $('#' + modalBodyId).load(url);
+}
+
+function showModal(parameter = {}) {
+
+    let modalId = ("modalId" in parameter) ? parameter.modalId : "commonModal";
+    let modalTitleId = ("modalTitleId" in parameter) ? parameter.modalTitleId : "commonModalTitle";
+    let modalFooterId = ("modalFooterId" in parameter) ? parameter.modalFooterId : "commonModalFooter";
+
+
+    let titleContent = ("titleContent" in parameter) ? parameter.titleContent : "";
+    let footerContent = ("footerContent" in parameter) ? parameter.footerContent : "";
+
+    $('#' + modalTitleId).html('');
+    $('#' + modalFooterId).html('');
+
+    $("#" + modalTitleId).html(titleContent);
+    $("#" + modalFooterId).html(footerContent);
+
+    $('.clsSelect2').select2();
+    // $('.datepicker').datepicker();
+    $('.datepicker-custom').datepicker({ dateFormat: 'dd-mm-yy' });
+    $('.datepicker').datepicker({ dateFormat: 'dd-mm-yy' });
+
+    $("#" + modalId).modal('show');
+}
+
+function hideModal(modalId = "commonModal", modalBodyId = "commonModalBody", modalFooterId = "commonModalFooter") {
+    $('#' + modalId).modal('hide');
+    $('#' + modalBodyId).html('');
+    $('#' + modalFooterId).html('');
+
+    $('#' + modalId).on('hidden.bs.modal', () => {
+        $('#' + modalBodyId).html('');
+        $('#' + modalFooterId).html('');
+    });
+
+}
+
+function getModalFooterElement(parameter) {
+    var footer = '';
+
+    if ($.isPlainObject(parameter) == false) {
+        return "Please Give Us Object Data";
+    }
+
+    if (typeof(parameter.btnNature) === 'undefined' || $.isEmptyObject(parameter.btnNature) == true) {
+        return "Please Give Us Button Nature";
+    }
+
+    let btnElement = parameter.btnNature;
+
+    $.each(btnElement, function(key, btnNature) {
+
+        let btnId = (typeof(parameter.btnId[key]) == 'undefined') ? false : parameter.btnId[key];
+        let btnName = (typeof(parameter.btnName[key]) == 'undefined') ? false : parameter.btnName[key];
+
+        switch (btnNature) {
+            case "save":
+                footer += '<a href="javascript:void(0)" class="btn btn-primary text-uppercase btn-round"';
+                footer += (btnId !== false) ? ' id="' + btnId + '" >' : ' >';
+                footer += '<i class="fa mr-2 fa-floppy-o" aria-hidden="true"></i>';
+                footer += (btnName !== false) ? btnName : 'Save';
+                footer += '</a>';
+                break;
+
+            case "update":
+                footer += '<a href="javascript:void(0)" class="btn btn-primary text-uppercase btn-round"';
+                footer += (btnId !== false) ? ' id="' + btnId + '" >' : ' >';
+                footer += '<i class="fa mr-2 fa-floppy-o" aria-hidden="true"></i>';
+                footer += (btnName !== false) ? btnName : 'Update';
+                footer += '</a>';
+                break;
+
+            case "send":
+                footer += '<a href="javascript:void(0)" class="btn btn-primary text-uppercase btn-round"';
+                footer += (btnId !== false) ? ' id="' + btnId + '" >' : ' >';
+                footer += '<i class="fa-solid mr-2 fa-paper-plane"></i>';
+                footer += (btnName !== false) ? btnName : 'Send';
+                footer += '</a>';
+                break;
+
+            case "reject":
+                footer += '<button type="submit" class="btn btn-danger text-uppercase btn-round"';
+                footer += (btnId !== false) ? ' id="' + btnId + '" >' : ' >';
+                footer += '<i class="mr-2 fas fa-times" aria-hidden="true"></i>';
+                footer += (btnName !== false) ? btnName : 'Reject';
+                footer += '</button>';
+                break;
+
+            case "close":
+                footer += '<a href="javascript:void(0)" class="btn btn-primary text-uppercase btn-round"';
+                footer += (btnId !== false) ? ' id="' + btnId + '" >' : ' >';
+                footer += '<i class="fa mr-2 fa-close" aria-hidden="true"></i>';
+                footer += (btnName !== false) ? btnName : 'Close';
+                footer += '</a>';
+                break;
+
+            default:
+                footer += "Invalid Button Nature";
+        }
+    });
+
+    return footer;
+}
+
