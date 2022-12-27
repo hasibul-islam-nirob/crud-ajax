@@ -83,6 +83,41 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    // add new employee ajax request
+    $("#add_employee_form").submit(function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        $("#add_employee_btn").text('Adding...');
+
+
+        $.ajax({
+            url: '{{ route('store') }}',
+            method: 'post',
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function(response) {
+                if (response.status == 200) {
+                    Swal.fire(
+                        'Added!',
+                        'Employee Added Successfully!',
+                        'success'
+                    )
+
+                }
+                $("#add_employee_btn").text('Add Employee');
+                $("#add_employee_form")[0].reset();
+                $("#addEmployeeModal").modal('hide');
+            }
+        });
+
+
+    });
+</script>
+
 </body>
 
 </html>
