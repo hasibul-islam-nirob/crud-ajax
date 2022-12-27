@@ -116,6 +116,23 @@
 
 
     });
+
+
+    // fetch all employees ajax request
+    fetchAllEmployees();
+
+    function fetchAllEmployees() {
+        $.ajax({
+            url: '{{ route('fetchAll') }}',
+            method: 'get',
+            success: function(response) {
+                $("#show_all_employees").html(response);
+                $("table").DataTable({
+                    order: [0, 'desc']
+                });
+            }
+        });
+    }
 </script>
 
 </body>
